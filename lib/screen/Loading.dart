@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/mylocation.dart';
 import 'package:flutter_login/network.dart';
 import 'package:flutter_login/screen/weather.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 const String api = '672d167165382a883ea3c5e9851756be';
 
