@@ -3,32 +3,49 @@ import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../model.dart';
 
 class weather extends StatefulWidget {
-  weather({this.parseWeatherData});
-
+  weather({this.parseWeatherData, this.parseAir}); //데이터 받아오는 코드
   final dynamic parseWeatherData;
+  final dynamic parseAir;
 
   @override
   State<weather> createState() => _weatherState();
 }
 
 class _weatherState extends State<weather> {
-  late String cityname;
-  late int temp;
+  Model model = Model();
+  String? cityname;
+  int? temp;
+  Widget? icon;
+  String? des;
+  Widget? aqi;
+  Widget? aircondition;
+  double? dust1;
+  double? dust2;
+
   var date = DateTime.now();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    updateData(widget.parseWeatherData);
+    updateData(widget.parseWeatherData, widget.parseAir);
   }
 
-  void updateData(dynamic weatherData) {
-    double temp2 = weatherData['main']['temp'];
+  void updateData(dynamic weatherData, dynamic airdata) {
+    double temp2 = weatherData['main']['temp'].toDouble();
     temp = temp2.toInt();
     cityname = weatherData['name'];
+    int index = airdata['list'][0]['main']['aqi'];
+    int condition = weatherData['weather'][0]['id'];
+    dust1 = airdata['list'][0]['components']['pm10'].toDouble();
+    dust2 = airdata['list'][0]['components']['pm2_5'].toDouble();
+    icon = model.getWeathericon(condition);
+    des = weatherData['weather'][0]['description'];
+    aqi = model.getAirIcon(index);
+    aircondition = model.getAirCondition(index);
   }
 
   String getSystemTime() {
@@ -118,9 +135,9 @@ class _weatherState extends State<weather> {
                             ),
                             Row(
                               children: [
-                                SvgPicture.asset('svg/climacon-sun.svg',),
+                                icon!,
                                 Text(
-                                  'good day',
+                                  '$des',
                                   style: GoogleFonts.lato(
                                       fontSize: 16, color: Colors.white),
                                 )
@@ -148,67 +165,57 @@ class _weatherState extends State<weather> {
                           Column(children: [
                             Text(
                               'AQI 지수',
-                              style: TextStyle(
-                                color: Colors.white
-                              ),
+                              style: TextStyle(color: Colors.white),
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            Image.asset('image/good.png',
-                            width: 50,
-                            height: 50,),
+                            aqi!,
                             SizedBox(
                               height: 10,
                             ),
-                            Text(
-                              '나쁨',
-                            ),
+                            aircondition!,
                           ]),
                           Column(children: [
                             Text(
                               '미세먼지',
-                              style: TextStyle(
-                                  color: Colors.white
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text('222.22',
-                              style: TextStyle(
-                                fontSize: 30,
-                                color: Colors.white
-                              ),
+                              style: TextStyle(color: Colors.white),
                             ),
                             SizedBox(
                               height: 10,
                             ),
                             Text(
-                              '나쁨',
+                              '$dust1',
+                              style:
+                                  TextStyle(fontSize: 30, color: Colors.white),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              '㎍/m3',
+                              style: TextStyle(color: Colors.white),
                             ),
                           ]),
                           Column(children: [
                             Text(
                               '초미세먼지',
-                              style: TextStyle(
-                                  color: Colors.white
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text('222.22',
-                              style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.white
-                              ),
+                              style: TextStyle(color: Colors.white),
                             ),
                             SizedBox(
                               height: 10,
                             ),
                             Text(
-                              '나쁨',
+                              '$dust2',
+                              style:
+                                  TextStyle(fontSize: 30, color: Colors.white),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              '㎍/m3',
+                              style: TextStyle(color: Colors.white),
                             ),
                           ]),
                         ],
