@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'screen/Loading.dart';
+import 'package:get/get.dart';
 
 
 void main(){
@@ -10,9 +11,10 @@ void main(){
 class Myapp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    String scity = '';
+    return GetMaterialApp(
       title: 'firebase',
-      home: Loading(),
+      home: Loading(scity),
     );
   }
 }

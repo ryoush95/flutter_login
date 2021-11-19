@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login/screen/search2.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import '../model.dart';
 
 class weather extends StatefulWidget {
-  weather({this.parseWeatherData, this.parseAir}); //데이터 받아오는 코드
+  weather(this.parseWeatherData, this.parseAir); //데이터 받아오는 코드
   final dynamic parseWeatherData;
   final dynamic parseAir;
 
@@ -24,6 +25,7 @@ class _weatherState extends State<weather> {
   Widget? aircondition;
   double? dust1;
   double? dust2;
+  final List<String> list = List.generate(10,(index)=> "text $index");
 
   var date = DateTime.now();
 
@@ -62,12 +64,16 @@ class _weatherState extends State<weather> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+          },
           icon: Icon(Icons.near_me),
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              // showSearch(context: context, delegate: Search(list));
+              Get.to(City());
+            },
             icon: Icon(Icons.location_searching),
           )
         ],
