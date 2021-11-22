@@ -9,6 +9,7 @@ const String api = '672d167165382a883ea3c5e9851756be';
 
 class Loading extends StatefulWidget {
   Loading(this.scity);
+
   final String scity;
 
   @override
@@ -19,25 +20,17 @@ class _LoadingState extends State<Loading> {
   late double lat2;
   late double lon2;
 
-
-
   initState() {
     super.initState();
     getLocation(widget.scity);
   }
 
   void getLocation(String scity) async {
-    print(scity);
-    if(scity == ''){
-      Mylocation mylocation = Mylocation();
-      await mylocation.getLocation();
-      lat2 = mylocation.lat;
-      lon2 = mylocation.lon;
-      print("$lat2 + $lon2");
-    }else {
-
-    }
-
+    Mylocation mylocation = Mylocation();
+    await mylocation.getLocation(scity);
+    lat2 = mylocation.lat!;
+    lon2 = mylocation.lon!;
+    print("$lat2 + $lon2");
 
     Network network = Network(
         'https://api.openweathermap.org/data/2.5/weather'
@@ -53,7 +46,7 @@ class _LoadingState extends State<Loading> {
     print(weatherData);
     var airdata = await network.airdata();
     print(airdata);
-    Get.off(weather(weatherData,airdata));
+    Get.off(weather(weatherData, airdata));
   }
 
   @override
